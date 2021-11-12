@@ -6,9 +6,11 @@ import HomePage from './pages/HomePage';
 import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
 import Profile from './pages/Profile';
+import { Toaster } from 'react-hot-toast';
 function App() {
   return (
     <Provider store={store}>
+      <Toaster />
       <Router>
         <NavigationBar />
         <Routes>
