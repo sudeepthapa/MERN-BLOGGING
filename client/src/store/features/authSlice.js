@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import API_ROUTES from '../../constants/apiRoutes';
 import Status from '../../constants/status';
+import axiosInstance from '../../helpers/api';
 
 const sliceName = 'auth';
 
@@ -16,7 +17,7 @@ export const registerAction = createAsyncThunk(
     `${sliceName}/registerAction`,
     async (payload, thunkAPI) => {
         try {
-            const response = await axios.post(`${API_ROUTES.auth}/register`, payload);
+            const response = await axiosInstance.post(`${API_ROUTES.auth}/register`, payload);
             return response.data;
         } catch (error) {
             console.log(error.response)
@@ -32,7 +33,7 @@ export const loginAction = createAsyncThunk(
     `${sliceName}/loginAction`,
     async (payload, thunkAPI) => {
         try {
-            const response = await axios.post(`${API_ROUTES.auth}/login`, payload);
+            const response = await axiosInstance.post(`${API_ROUTES.auth}/login`, payload);
             return response.data;
         } catch (error) {
             console.log(error.response)
@@ -48,7 +49,7 @@ export const getUserInfo = createAsyncThunk(
     `${sliceName}/getUserInfo`,
     async (payload, thunkAPI) => {
         try {
-            const response = await axios.get(`${API_ROUTES.user}/${payload}`);
+            const response = await axiosInstance.get(`${API_ROUTES.user}/${payload}`);
             return response.data;
         } catch (error) {
             console.log(error.response)

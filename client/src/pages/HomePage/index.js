@@ -7,13 +7,6 @@ import Hero from './Hero';
 import LatestBlogs from './LatestBlogs';
 import './style.css';
 const HomePage = () => {
-    const dispatch = useDispatch();
-    React.useEffect(()=>{
-        const userId = localStorage.getItem('user_id');
-        if(userId){
-            dispatch(getUserInfo(userId));
-        }
-    }, [])
 
     return (
         <React.Fragment>
