@@ -34,7 +34,8 @@ export const loginAction = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const response = await axiosInstance.post(`${API_ROUTES.auth}/login`, payload);
-            return response.data;
+            const userRes = await axiosInstance.get(`${API_ROUTES.user}/${response.data.user_id}`);
+            return {...response.data, user: userRes.data};
         } catch (error) {
             console.log(error.response)
             if(!error.response){
@@ -99,7 +100,7 @@ const authSlice = createSlice({
             .addCase(loginAction.fulfilled, (state, action) => {
                 state.status = Status.SUCCESS;
                 state.error = null;
-                state.user = action.payload;
+                state.user = action.payload.user;
                 state.isLoggedIn = true;
                 localStorage.setItem('token', action.payload.token);
                 localStorage.setItem('user_id', action.payload.user_id);
