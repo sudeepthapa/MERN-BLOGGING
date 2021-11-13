@@ -11,7 +11,8 @@ const Register = () => {
         fullname: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        photo: ''
     };
     const [userDetails, setUserDetails] = useState(initialState);
     const [errors, setErrors] = useState({});
@@ -49,7 +50,11 @@ const Register = () => {
         }else{
             setErrors({});
             const {confirmPassword, ...payload} = userDetails;
-            dispatch(registerAction(payload));
+            const formData = new FormData();
+            Object.keys(payload).forEach(key=>{
+                formData.append(key, payload[key])
+            })
+            dispatch(registerAction(formData));
         }
 
     }
@@ -65,12 +70,16 @@ const Register = () => {
         }
     }, [status])
 
+    const handlePhoto = (e) => {
+        setUserDetails({...userDetails, photo: e.target.files[0]});
+    }
+
     return (
         <Container className='mt-4 d-flex justify-content-center'>
             <Card className='p-3 w-50'>
                 <h3 className="text-muted">Register</h3>
                 <hr></hr>
-                <Form onSubmit={handleFormSubmit}>
+                <Form onSubmit={handleFormSubmit} encType='multipart/form-data'>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Full Name</Form.Label>
                         <Form.Control value={userDetails.fullname} type="name" name='fullname' placeholder="Enter Full Name" onChange={handleUserDetailChange} />
@@ -105,7 +114,7 @@ const Register = () => {
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>Upload Profile</Form.Label>
-                        <Form.Control type="file" name='photo'/>
+                        <Form.Control onChange={handlePhoto} accept=".png, .jpg, .jpeg" type="file" name='photo'/>
                     </Form.Group>
                 
                     <Button variant="primary" type="submit">

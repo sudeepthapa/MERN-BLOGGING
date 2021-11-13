@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 class AuthController{
 
     async login(req, res){
@@ -41,6 +42,7 @@ class AuthController{
 
     async register(req, res){
         const {firstname, lastname, email, password} = req.body;
+        const photo = req.file.path;
 
         try {
             // Input Validation
@@ -66,7 +68,8 @@ class AuthController{
                 firstname,
                 lastname,
                 email: email.toLowerCase(),
-                password: hashedPassword
+                password: hashedPassword,
+                photo
             })
 
             res.status(201).json(user);

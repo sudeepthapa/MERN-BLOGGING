@@ -1,9 +1,10 @@
 import '../profile.css';
+import API_ROUTES from '../../../constants/apiRoutes';
 const ProfileHeader = ({user}) => {
     return (
         <div className="profile">
             <div className="profile-image mb-3">
-                <img width="100%" height="100%" src='https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' />
+                <img width="100%" height="100%" src={user.photo? `${API_ROUTES.base}${user.photo}` :'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'} />
             </div>
             <h4>{user.fullname || 'Unknown'}</h4>
             <p className="text-muted">{user.email || ''}</p>
