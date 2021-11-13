@@ -1,10 +1,20 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import Footer from '../../components/Footer';
+import { getUserInfo } from '../../store/features/authSlice';
 import Hero from './Hero';
 import LatestBlogs from './LatestBlogs';
 import './style.css';
 const HomePage = () => {
+    const dispatch = useDispatch();
+    React.useEffect(()=>{
+        const userId = localStorage.getItem('user_id');
+        if(userId){
+            dispatch(getUserInfo(userId));
+        }
+    }, [])
+
     return (
         <React.Fragment>
             <Hero />

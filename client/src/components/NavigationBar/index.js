@@ -1,6 +1,10 @@
 import {Navbar, Container, Nav, Button} from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import {NavLink} from 'react-router-dom'
+import { logOut } from '../../store/features/authSlice';
 const NavigationBar = () => {
+    const {isLoggedIn} = useSelector(state=>state.auth)
+    const dispatch = useDispatch()
     return (
         <Navbar bg="light" expand="lg" sticky="top">
             <Container>
@@ -9,10 +13,10 @@ const NavigationBar = () => {
                 <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                     <Nav className="ml-auto align-items-center">
                         <NavLink className="nav-link" to="/blog">Blogs</NavLink>
-                        <NavLink className="nav-link" to="/profile">Profile</NavLink>
-                        <NavLink className="nav-link" to="/login">Login</NavLink>
-                        <NavLink className="nav-link" to="/register"> <Button>Get Started</Button> </NavLink>
-                        {/* <Nav.Link href="#link">Logout</Nav.Link> */}
+                        {isLoggedIn && <NavLink className="nav-link" to="/profile">Profile</NavLink>}
+                        {!isLoggedIn && <NavLink className="nav-link" to="/login">Login</NavLink>}
+                        {!isLoggedIn && <NavLink className="nav-link" to="/register"> <Button>Get Started</Button> </NavLink>}
+                        {isLoggedIn && <Nav.Link onClick={()=>dispatch(logOut())}>Logout</Nav.Link>}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

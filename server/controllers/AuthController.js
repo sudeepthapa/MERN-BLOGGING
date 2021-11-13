@@ -32,7 +32,7 @@ class AuthController{
 
             const token = jwt.sign({user_id: user._id, email}, process.env.JWT_SECRET, {expiresIn: "24h"});
 
-            res.status(200).json({token});
+            res.status(200).json({token, user_id: user._id});
         } catch (error) {
             console.log(error)
             res.status(500).json({error: 'Something went wrong.'});           

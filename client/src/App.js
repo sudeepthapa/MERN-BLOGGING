@@ -7,6 +7,7 @@ import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
 import Profile from './pages/Profile';
 import { Toaster } from 'react-hot-toast';
+import PrivateRoute from './helpers/PrivateRoute';
 function App() {
   return (
     <Provider store={store}>
@@ -17,7 +18,7 @@ function App() {
           <Route path='/blog' element={<HomePage/>} />
           <Route path='/register' element={<Register/>} />
           <Route path='/login' element={<Login />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route path='/profile' element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route path='/' element={<HomePage />} />
         </Routes>
       </Router>
