@@ -9,6 +9,7 @@ const connectToDatabase = require('./config/db');
 const authRoutes = require('./routes/auth');
 const usersRoutes = require('./routes/users');
 const postsRoutes = require('./routes/posts');
+const categoriesRoutes = require('./routes/categories');
 
 // Express app
 const app = express();
@@ -28,6 +29,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', usersRoutes);
 app.use('/api/v1/posts', postsRoutes);
+app.use('/api/v1/categories', categoriesRoutes);
 
 app.use((req, res, next)=>{
     const error = new Error("Not Found");
