@@ -1,5 +1,4 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
 import API_ROUTES from '../../constants/apiRoutes';
 import Status from '../../constants/status';
 import axiosInstance from '../../helpers/api';
@@ -9,6 +8,7 @@ const sliceName = 'auth';
 const initialState = {
     isLoggedIn: false,
     status: Status.IDLE,
+    isAuthenticating: false,
     user: null,
     error: null
 };
@@ -34,8 +34,8 @@ export const loginAction = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const response = await axiosInstance.post(`${API_ROUTES.auth}/login`, payload);
-            const userRes = await axiosInstance.get(`${API_ROUTES.user}/${response.data.user_id}`);
-            return {...response.data, user: userRes.data};
+            // const userRes = await axiosInstance.get(`${API_ROUTES.user}/${response.data.user_id}`);
+            return {...response.data};
         } catch (error) {
             console.log(error.response)
             if(!error.response){
@@ -92,22 +92,34 @@ const authSlice = createSlice({
         builder
             .addCase(loginAction.pending, (state) => {
                 state.status = Status.PENDING;
+                state.isAuthenticating = true;
             })
             .addCase(loginAction.rejected, (state, action)=>{
                 state.status = Status.ERROR;
                 state.error = action.payload;
+                state.isAuthenticating = false;
+
             })
             .addCase(loginAction.fulfilled, (state, action) => {
                 state.status = Status.SUCCESS;
                 state.error = null;
-                state.user = action.payload.user;
                 state.isLoggedIn = true;
                 localStorage.setItem('token', action.payload.token);
                 localStorage.setItem('user_id', action.payload.user_id);
+                state.isAuthenticating = false;
             })
         builder.addCase(getUserInfo.fulfilled, (state, action)=> {
             state.user = action.payload;
             state.isLoggedIn = true;
+            state.isAuthenticating = false;
+        })
+        .addCase(getUserInfo.rejected, (state, action)=> {
+            state.isLoggedIn = true;
+            state.isAuthenticating = false;
+        })
+        .addCase(getUserInfo.pending, (state, action)=> {
+            state.isLoggedIn = false;
+            state.isAuthenticating = true
         })
     }
 });
